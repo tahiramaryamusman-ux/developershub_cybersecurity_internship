@@ -7,10 +7,14 @@ const Op = db.Sequelize.Op;
 
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
+const validator = require("validator");
 
 exports.signup = async (req, res) => {
   // Save User to Database
   try {
+    if (!validator.isEmail(req.body.email)) {
+  return res.status(400).send({ message: "Invalid email format!" });
+}
     const user = await User.create({
       username: req.body.username,
       email: req.body.email,

@@ -20,12 +20,15 @@
   "author": "bezkoder",
   "license": "ISC",
   "dependencies": {
+    "bcrypt": "^6.0.0",
     "bcryptjs": "^2.4.3",
     "cookie-session": "^2.0.0",
     "cors": "^2.8.5",
     "express": "^4.18.2",
-    "jsonwebtoken": "^9.0.0",
+    "helmet": "^8.2.0",
+    "jsonwebtoken": "^9.0.3",
     "mysql2": "^2.3.3",
-    "sequelize": "^6.31.1"
+    "sequelize": "^6.31.1",
+    "validator": "^13.15.35"
   }
 }

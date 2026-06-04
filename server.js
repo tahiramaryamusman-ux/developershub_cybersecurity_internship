@@ -1,3 +1,15 @@
+const helmet = require("helmet");
+const validator = require("validator");
+const winston = require("winston");
+
+const logger = winston.createLogger({
+  transports: [
+    new winston.transports.Console(),
+    new winston.transports.File({ filename: "security.log" })
+  ]
+});
+
+logger.info("Application started");
 const express = require("express");
 const cors = require("cors");
 const cookieSession = require("cookie-session");
@@ -5,6 +17,7 @@ const cookieSession = require("cookie-session");
 const app = express();
 
 app.use(cors());
+app.use(helmet());
 /* for Angular Client (withCredentials) */
 // app.use(
 //   cors({
