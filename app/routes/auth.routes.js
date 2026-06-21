@@ -1,3 +1,5 @@
+const csrf = require("csurf");
+const csrfProtection = csrf({ cookie: false });
 const { verifySignUp } = require("../middleware");
 const controller = require("../controllers/auth.controller");
 
@@ -12,6 +14,7 @@ module.exports = function(app) {
 
   app.post(
     "/api/auth/signup",
+    csrfProtection,
     [
       verifySignUp.checkDuplicateUsernameOrEmail,
       verifySignUp.checkRolesExisted

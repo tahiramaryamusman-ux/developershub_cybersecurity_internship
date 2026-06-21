@@ -14,6 +14,7 @@ logger.info("Application started");
 const express = require("express");
 const cors = require("cors");
 const cookieSession = require("cookie-session");
+const csrf = require("csurf");
 
 const app = express();
 
@@ -64,6 +65,7 @@ app.use(
     sameSite: 'strict'
   })
 );
+const csrfProtection = csrf({ cookie: false });
 
 // database
 const db = require("./app/models");
@@ -79,6 +81,10 @@ db.sequelize.sync();
 // simple route
 app.get("/", (req, res) => {
   res.json({ message: "Welcome to bezkoder application." });
+});
+// CSRF token route - test CSRF protection
+app.get("/api/csrf-token", csrfProtection, (req, res) => {
+  res.json({ csrfToken: req.csrfToken() });
 });
 
 // routes
