@@ -1,6 +1,7 @@
 const helmet = require("helmet");
 const validator = require("validator");
 const winston = require("winston");
+const rateLimit = require("express-rate-limit");
 
 const logger = winston.createLogger({
   transports: [
@@ -16,8 +17,31 @@ const cookieSession = require("cookie-session");
 
 const app = express();
 
-app.use(cors());
-app.use(helmet());
+app.use(cors({
+  origin: "http://localhost:8080",
+  credentials: true
+}));
+app.use(helmet({
+  contentSecurityPolicy: {
+    directives: {
+      defaultSrc: ["'self'"],
+      scriptSrc: ["'self'"],
+      styleSrc: ["'self'"],
+      objectSrc: ["'none'"],
+    },
+  },
+  hsts: {
+    maxAge: 31536000, // 1 year
+    includeSubDomains: true,
+  }
+}));
+const loginLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 5, // limit each IP to 5 login requests per 15 minutes
+  message: { message: "Too many login attempts. Please try again after 15 minutes." }
+});
+
+app.use('/api/auth/signin', loginLimiter);
 /* for Angular Client (withCredentials) */
 // app.use(
 //   cors({
