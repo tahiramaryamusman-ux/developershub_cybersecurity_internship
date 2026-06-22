@@ -17,6 +17,7 @@ const cookieSession = require("cookie-session");
 const csrf = require("csurf");
 
 const app = express();
+app.disable('x-powered-by');
 
 app.use(cors({
   origin: "http://localhost:8080",
